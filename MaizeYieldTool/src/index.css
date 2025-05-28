@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+
+body.light {
+    background-color: #f3f4f6; /* Light gray */
+    color: #1f2937; /* Dark gray */
+  }
+  
+  /* Dark theme */
+  body.dark {
+    background-color: #1f2937; /* Dark gray */
+    color: #f3f4f6; /* Light gray */
+  }
+  
+  /* You might need to adjust other elements as well for dark mode */
+  .bg-white.dark {
+    background-color: #374151; /* Darker gray */
+    color: #f3f4f6;
+  }
+  
+  .text-gray-700.dark {
+    color: #d1d5db; /* Light gray */
+  }
+  
+  .text-green-700.dark {
+    color: #86d1a8; /* Light green */
+  }
+  
+  .shadow-md.dark {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2); /* Darker shadow */
+  }
+  
+  .border-gray-200.dark {
+    border-color: #4b5563; /* Darker border */
+  }
+  
+  .hover\:bg-green-100.dark:hover {
+    background-color: #10b981; /* Darker green hover */
+  }
+  
+  .hover\:text-green-700.dark:hover {
+    color: #e0f7e8; /* Lighter green hover text */
+  }
+  
+  .dark-bg { /* Class applied to the SettingsPage main div */
+    background-color: #1f2937;
+  }
+  
+  /* Add more dark mode specific styles for other elements as needed */
+  /* For example, for links: */
+  a.dark {
+    color: #9eceff; /* A light blue for links in dark mode */
+  }
+  
+  a.dark:hover {
+    color: #cddfff;
+  }
+  
+  /* Style for input fields in dark mode */
+  input.dark {
+    background-color: #4a5568;
+    color: #f3f4f6;
+    border-color: #718096;
+  }
+  
+  select.dark {
+    background-color: #4a5568;
+    color: #f3f4f6;
+    border-color: #718096;
+  }
+  
+  /* Style for buttons in dark mode */
+  button.dark-green {
+    background-color: #10b981;
+    color: #f3f4f6;
+  }
+  
+  button.dark-green:hover {
+    background-color: #059669;
+  }
+  
+  button.dark-blue {
+    background-color: #3b82f6;
+    color: #f3f4f6;
+  }
+  
+  button.dark-blue:hover {
+    background-color: #2563eb;
+  }
+  
+  /* Style for cards in dark mode (if you have specific card styles) */
+  .rounded-lg.shadow-md.bg-white.dark {
+    /* Already covered by .bg-white.dark */
+  }
+  
+  

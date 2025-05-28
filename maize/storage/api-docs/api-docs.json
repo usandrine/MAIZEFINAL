@@ -1,0 +1,2041 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Product API",
+        "description": "API documentation for Product endpoints",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api",
+            "description": "API Server"
+        }
+    ],
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Login user and return token",
+                "operationId": "8cb7742ae98d0990acb2907c4e00bf24",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Register a new user",
+                "operationId": "ed42f392010c301892e640067141676e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "type": "object"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/auth/me": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Get the authenticated user's details",
+                "operationId": "a9c495788506b114956e3f509e5d90a2",
+                "responses": {
+                    "200": {
+                        "description": "Authenticated user info",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/farmers": {
+            "get": {
+                "tags": [
+                    "Farmers"
+                ],
+                "summary": "Get list of all farmers",
+                "description": "Display a listing of the farmers.",
+                "operationId": "386940d457e2137bbb7b112ac7fb5877",
+                "responses": {
+                    "200": {
+                        "description": "List of farmers"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Farmers"
+                ],
+                "summary": "Create a new farmer",
+                "description": "Store a newly created farmer in storage.",
+                "operationId": "84fba369b15b716b0e7bf1c7a19cecc1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "phone",
+                                    "region",
+                                    "registered_at"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    },
+                                    "region": {
+                                        "type": "string"
+                                    },
+                                    "registered_at": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Farmer created"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/farmers/{farmer}": {
+            "get": {
+                "tags": [
+                    "Farmers"
+                ],
+                "summary": "Get a specific farmer",
+                "description": "Display the specified farmer.",
+                "operationId": "22eacae850db6ddec3b8efc6f25c9917",
+                "parameters": [
+                    {
+                        "name": "farmer",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Farmer details"
+                    },
+                    "404": {
+                        "description": "Farmer not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Farmers"
+                ],
+                "summary": "Update a farmer",
+                "description": "Update the specified farmer in storage.",
+                "operationId": "510c1771745e0b3e53cc5888a12edeb9",
+                "parameters": [
+                    {
+                        "name": "farmer",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    },
+                                    "region": {
+                                        "type": "string"
+                                    },
+                                    "registered_at": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Farmer updated"
+                    },
+                    "404": {
+                        "description": "Farmer not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Farmers"
+                ],
+                "summary": "Delete a farmer",
+                "description": "Remove the specified farmer from storage.",
+                "operationId": "e221fecc925efcc6b4d3e1c08ae67d61",
+                "parameters": [
+                    {
+                        "name": "farmer",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Farmer deleted"
+                    },
+                    "404": {
+                        "description": "Farmer not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/fields": {
+            "get": {
+                "tags": [
+                    "Fields"
+                ],
+                "summary": "Get list of all fields",
+                "description": "Display a listing of the fields.",
+                "operationId": "98adbf5cfe27f69f4d91cbd015f58235",
+                "responses": {
+                    "200": {
+                        "description": "List of fields"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Fields"
+                ],
+                "summary": "Create a new field",
+                "description": "Store a newly created field in storage.",
+                "operationId": "5067df0d90e2096b52df7fcaa12de418",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "farmer_id",
+                                    "name",
+                                    "area_ha",
+                                    "soil_type",
+                                    "latitude",
+                                    "longitude"
+                                ],
+                                "properties": {
+                                    "farmer_id": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "area_ha": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "soil_type": {
+                                        "type": "string"
+                                    },
+                                    "latitude": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "longitude": {
+                                        "type": "number",
+                                        "format": "float"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Field created"
+                    }
+                }
+            }
+        },
+        "/fields/{field}": {
+            "get": {
+                "tags": [
+                    "Fields"
+                ],
+                "summary": "Get a specific field",
+                "description": "Display the specified field.",
+                "operationId": "8767c56586790373e81ed9541c45597e",
+                "parameters": [
+                    {
+                        "name": "field",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Field details"
+                    },
+                    "404": {
+                        "description": "Field not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Fields"
+                ],
+                "summary": "Update a field",
+                "description": "Update the specified field in storage.",
+                "operationId": "33ca332fcc78b8ec2047bd0abdda7fc7",
+                "parameters": [
+                    {
+                        "name": "field",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "area_ha": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "soil_type": {
+                                        "type": "string"
+                                    },
+                                    "latitude": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "longitude": {
+                                        "type": "number",
+                                        "format": "float"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Field updated"
+                    },
+                    "404": {
+                        "description": "Field not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Fields"
+                ],
+                "summary": "Delete a field",
+                "description": "Remove the specified field from storage.",
+                "operationId": "884b67a22e03925ec80feb8da54d846d",
+                "parameters": [
+                    {
+                        "name": "field",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Field deleted"
+                    },
+                    "404": {
+                        "description": "Field not found"
+                    }
+                }
+            }
+        },
+        "/historical-yields": {
+            "get": {
+                "tags": [
+                    "HistoricalYields"
+                ],
+                "summary": "Get list of all historical yields",
+                "description": "Display a listing of the historical yields.",
+                "operationId": "90fe2c313c3ed6256ae0960729e7526e",
+                "responses": {
+                    "200": {
+                        "description": "List of historical yields"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "HistoricalYields"
+                ],
+                "summary": "Create a new historical yield",
+                "description": "Store a newly created historical yield in storage.",
+                "operationId": "963a525ed76563a7ed0a3a4929f555e8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "region_or_field",
+                                    "year",
+                                    "yield_t_ha",
+                                    "source"
+                                ],
+                                "properties": {
+                                    "region_or_field": {
+                                        "type": "string"
+                                    },
+                                    "year": {
+                                        "type": "integer"
+                                    },
+                                    "yield_t_ha": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "source": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Historical yield created"
+                    }
+                }
+            }
+        },
+        "/historical-yields/{historical_yield}": {
+            "get": {
+                "tags": [
+                    "HistoricalYields"
+                ],
+                "summary": "Get a specific historical yield",
+                "description": "Display the specified historical yield.",
+                "operationId": "93d90743eb7e1534a5611d6ab55d59be",
+                "parameters": [
+                    {
+                        "name": "historical_yield",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Historical yield details"
+                    },
+                    "404": {
+                        "description": "Historical yield not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "HistoricalYields"
+                ],
+                "summary": "Update a historical yield",
+                "description": "Update the specified historical yield in storage.",
+                "operationId": "6cb7c23e47a0eea50b4f6b26aee59f48",
+                "parameters": [
+                    {
+                        "name": "historical_yield",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "region_or_field": {
+                                        "type": "string"
+                                    },
+                                    "year": {
+                                        "type": "integer"
+                                    },
+                                    "yield_t_ha": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "source": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Historical yield updated"
+                    },
+                    "404": {
+                        "description": "Historical yield not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "HistoricalYields"
+                ],
+                "summary": "Delete a historical yield",
+                "description": "Remove the specified historical yield from storage.",
+                "operationId": "e96373e099a696ec8cdc67c236f047e0",
+                "parameters": [
+                    {
+                        "name": "historical_yield",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Historical yield deleted"
+                    },
+                    "404": {
+                        "description": "Historical yield not found"
+                    }
+                }
+            }
+        },
+        "/products": {
+            "get": {
+                "tags": [
+                    "products"
+                ],
+                "summary": "Get list of products",
+                "operationId": "c1ff6f862214e1896c59cfe0491ce0e8",
+                "responses": {
+                    "200": {
+                        "description": "List of products"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "products"
+                ],
+                "summary": "Create a new product",
+                "operationId": "399770d33fa4672f1216707d0e236763",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "image_url": {
+                                        "type": "string"
+                                    },
+                                    "firmware_version": {
+                                        "type": "string"
+                                    },
+                                    "is_active": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Product created"
+                    }
+                }
+            }
+        },
+        "/products/{product}": {
+            "get": {
+                "tags": [
+                    "products"
+                ],
+                "summary": "Get a product by ID",
+                "operationId": "960e17d05ed63211b20fb4b8505f1263",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product data"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "products"
+                ],
+                "summary": "Update a product",
+                "operationId": "d8f8f68cbee2f6a5c291d7940a3dc4ed",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "image_url": {
+                                        "type": "string"
+                                    },
+                                    "firmware_version": {
+                                        "type": "string"
+                                    },
+                                    "is_active": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Product updated"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "products"
+                ],
+                "summary": "Delete a product",
+                "operationId": "13d9c94a21e9746d2a61b6a3247b7693",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Product deleted"
+                    }
+                }
+            }
+        },
+        "/recommendations": {
+            "get": {
+                "tags": [
+                    "Recommendations"
+                ],
+                "summary": "Get list of all recommendations",
+                "description": "Display a listing of the recommendations.",
+                "operationId": "b50096a7b015b6eb5e37f889d4d86223",
+                "responses": {
+                    "200": {
+                        "description": "List of recommendations"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Recommendations"
+                ],
+                "summary": "Create a new recommendation",
+                "description": "Store a newly created recommendation in storage.",
+                "operationId": "65096d023ff0777c624e8f51ee0d4ceb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "field_id",
+                                    "recommendation_date",
+                                    "recommendation_type",
+                                    "message"
+                                ],
+                                "properties": {
+                                    "field_id": {
+                                        "type": "string"
+                                    },
+                                    "recommendation_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "recommendation_type": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Recommendation created"
+                    }
+                }
+            }
+        },
+        "/recommendations/{recommendation}": {
+            "get": {
+                "tags": [
+                    "Recommendations"
+                ],
+                "summary": "Get a specific recommendation",
+                "description": "Display the specified recommendation.",
+                "operationId": "15ed7af15fa9a3048e52b716fcbb2482",
+                "parameters": [
+                    {
+                        "name": "recommendation",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recommendation details"
+                    },
+                    "404": {
+                        "description": "Recommendation not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Recommendations"
+                ],
+                "summary": "Update a recommendation",
+                "description": "Update the specified recommendation in storage.",
+                "operationId": "70711eeefa85f5cc1f71543d92c65da9",
+                "parameters": [
+                    {
+                        "name": "recommendation",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "recommendation_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "recommendation_type": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Recommendation updated"
+                    },
+                    "404": {
+                        "description": "Recommendation not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Recommendations"
+                ],
+                "summary": "Delete a recommendation",
+                "description": "Remove the specified recommendation from storage.",
+                "operationId": "bf76b8843f1ef30c866ca4e5c6253dba",
+                "parameters": [
+                    {
+                        "name": "recommendation",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Recommendation deleted"
+                    },
+                    "404": {
+                        "description": "Recommendation not found"
+                    }
+                }
+            }
+        },
+        "/sensors": {
+            "get": {
+                "tags": [
+                    "Sensors"
+                ],
+                "summary": "Get list of all sensors",
+                "description": "Display a listing of the sensors.",
+                "operationId": "bd490465cc6a8216bb89455e149f4dd6",
+                "responses": {
+                    "200": {
+                        "description": "List of sensors"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Sensors"
+                ],
+                "summary": "Create a new sensor",
+                "description": "Store a newly created sensor in storage.",
+                "operationId": "ad22243e7d669a455d43db153d3b9e90",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "field_id",
+                                    "sensor_type",
+                                    "installation_date",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "field_id": {
+                                        "type": "string"
+                                    },
+                                    "sensor_type": {
+                                        "type": "string"
+                                    },
+                                    "installation_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "status": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Sensor created"
+                    }
+                }
+            }
+        },
+        "/sensors/{sensor}": {
+            "get": {
+                "tags": [
+                    "Sensors"
+                ],
+                "summary": "Get a specific sensor",
+                "description": "Display the specified sensor.",
+                "operationId": "60dc5af5fb5d87ae03c74f6ffed53968",
+                "parameters": [
+                    {
+                        "name": "sensor",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sensor details"
+                    },
+                    "404": {
+                        "description": "Sensor not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Sensors"
+                ],
+                "summary": "Update a sensor",
+                "description": "Update the specified sensor in storage.",
+                "operationId": "1d70ea6b51af8d33e8124a8e8eb06b4d",
+                "parameters": [
+                    {
+                        "name": "sensor",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "sensor_type": {
+                                        "type": "string"
+                                    },
+                                    "installation_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "status": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sensor updated"
+                    },
+                    "404": {
+                        "description": "Sensor not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Sensors"
+                ],
+                "summary": "Delete a sensor",
+                "description": "Remove the specified sensor from storage.",
+                "operationId": "2cac48377a74621fd696b50a2dcb3218",
+                "parameters": [
+                    {
+                        "name": "sensor",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Sensor deleted"
+                    },
+                    "404": {
+                        "description": "Sensor not found"
+                    }
+                }
+            }
+        },
+        "/sensor-readings": {
+            "get": {
+                "tags": [
+                    "SensorReadings"
+                ],
+                "summary": "Get list of all sensor readings",
+                "description": "Display a listing of the sensor readings.",
+                "operationId": "28dc4aa2ece9b7a924d32ad3ceae6aac",
+                "responses": {
+                    "200": {
+                        "description": "List of sensor readings"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "SensorReadings"
+                ],
+                "summary": "Create a new sensor reading",
+                "description": "Store a newly created sensor reading in storage.",
+                "operationId": "a9255417314e540647bccd4f256036be",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "sensor_id",
+                                    "timestamp",
+                                    "value"
+                                ],
+                                "properties": {
+                                    "sensor_id": {
+                                        "type": "string"
+                                    },
+                                    "timestamp": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "value": {
+                                        "type": "number",
+                                        "format": "float"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Sensor reading created"
+                    }
+                }
+            }
+        },
+        "/sensor-readings/{reading}": {
+            "get": {
+                "tags": [
+                    "SensorReadings"
+                ],
+                "summary": "Get a specific sensor reading",
+                "description": "Display the specified sensor reading.",
+                "operationId": "934148fbd96831794ef8d3f06e09042a",
+                "parameters": [
+                    {
+                        "name": "reading",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sensor reading details"
+                    },
+                    "404": {
+                        "description": "Sensor reading not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "SensorReadings"
+                ],
+                "summary": "Update a sensor reading",
+                "description": "Update the specified sensor reading in storage.",
+                "operationId": "437b10c8d915f701a3e95d39c4a2b06b",
+                "parameters": [
+                    {
+                        "name": "reading",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "timestamp": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "value": {
+                                        "type": "number",
+                                        "format": "float"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sensor reading updated"
+                    },
+                    "404": {
+                        "description": "Sensor reading not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "SensorReadings"
+                ],
+                "summary": "Delete a sensor reading",
+                "description": "Remove the specified sensor reading from storage.",
+                "operationId": "818fe3561358996faa8f019e0abeb219",
+                "parameters": [
+                    {
+                        "name": "reading",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Sensor reading deleted"
+                    },
+                    "404": {
+                        "description": "Sensor reading not found"
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "List all users",
+                "operationId": "7e2f5799553ec93c9c43e2a58490d447",
+                "responses": {
+                    "200": {
+                        "description": "List of users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create a new user",
+                "operationId": "a1fce870c566eb5fc0cf3178ec5d2fed",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get a user by ID",
+                "operationId": "910a0c7cf580e1c605648d82a4e57f46",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update a user",
+                "operationId": "ddfe232db1870b82493bf8bd25596d37",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete a user",
+                "operationId": "43dd20becb1f47444e484cbb18ce345c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User deleted"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/yield-predictions": {
+            "get": {
+                "tags": [
+                    "YieldPredictions"
+                ],
+                "summary": "Get list of all yield predictions",
+                "description": "Display a listing of the yield predictions.",
+                "operationId": "cf8f94ccad91c83592151ec5e3c5af61",
+                "responses": {
+                    "200": {
+                        "description": "List of yield predictions"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "YieldPredictions"
+                ],
+                "summary": "Create a new yield prediction",
+                "description": "Store a newly created yield prediction in storage.",
+                "operationId": "3aac187079df0a7cc60d41ab1122461b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "field_id",
+                                    "model_version",
+                                    "prediction_date",
+                                    "predicted_yield_t_ha"
+                                ],
+                                "properties": {
+                                    "field_id": {
+                                        "type": "string"
+                                    },
+                                    "model_version": {
+                                        "type": "string"
+                                    },
+                                    "prediction_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "predicted_yield_t_ha": {
+                                        "type": "number",
+                                        "format": "float"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Yield prediction created"
+                    }
+                }
+            }
+        },
+        "/yield-predictions/{prediction}": {
+            "get": {
+                "tags": [
+                    "YieldPredictions"
+                ],
+                "summary": "Get a specific yield prediction",
+                "description": "Display the specified yield prediction.",
+                "operationId": "2c905fdc43497f712f50d9c9e97152f3",
+                "parameters": [
+                    {
+                        "name": "prediction",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Yield prediction details"
+                    },
+                    "404": {
+                        "description": "Yield prediction not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "YieldPredictions"
+                ],
+                "summary": "Update a yield prediction",
+                "description": "Update the specified yield prediction in storage.",
+                "operationId": "76937df1a1882f3bbcab26a57e1f43d4",
+                "parameters": [
+                    {
+                        "name": "prediction",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "field_id": {
+                                        "type": "string"
+                                    },
+                                    "model_version": {
+                                        "type": "string"
+                                    },
+                                    "prediction_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "predicted_yield_t_ha": {
+                                        "type": "number",
+                                        "format": "float"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Yield prediction updated"
+                    },
+                    "404": {
+                        "description": "Yield prediction not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "YieldPredictions"
+                ],
+                "summary": "Delete a yield prediction",
+                "description": "Remove the specified yield prediction from storage.",
+                "operationId": "5b2b053a5009b5853eb5189349ead271",
+                "parameters": [
+                    {
+                        "name": "prediction",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Yield prediction deleted"
+                    },
+                    "404": {
+                        "description": "Yield prediction not found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "HistoricalYield": {
+                "title": "HistoricalYield",
+                "required": [
+                    "id",
+                    "region_or_field",
+                    "year",
+                    "yield_t_ha",
+                    "source"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "region_or_field": {
+                        "type": "string",
+                        "example": "Region A"
+                    },
+                    "year": {
+                        "type": "integer",
+                        "example": 2024
+                    },
+                    "yield_t_ha": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 6.2
+                    },
+                    "source": {
+                        "type": "string",
+                        "example": "Ministry of Agriculture"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Product": {
+                "title": "Product",
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Maize Sensor"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "A sensor for maize fields"
+                    },
+                    "image_url": {
+                        "type": "string",
+                        "example": "https://example.com/image.jpg"
+                    },
+                    "firmware_version": {
+                        "type": "string",
+                        "example": "1.0.0"
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Recommendation": {
+                "title": "Recommendation",
+                "required": [
+                    "id",
+                    "field_id",
+                    "recommendation_date",
+                    "recommendation_type",
+                    "message"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "field_id": {
+                        "type": "string",
+                        "example": "f1a2b3c4-d5e6-7890-1234-56789abcdef0"
+                    },
+                    "recommendation_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-05-27"
+                    },
+                    "recommendation_type": {
+                        "type": "string",
+                        "example": "fertilizer"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Apply 50kg/ha of NPK"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Sensor": {
+                "title": "Sensor",
+                "required": [
+                    "sensor_id",
+                    "field_id",
+                    "sensor_type",
+                    "installation_date",
+                    "status"
+                ],
+                "properties": {
+                    "sensor_id": {
+                        "type": "string",
+                        "example": "s1a2b3c4-d5e6-7890-1234-56789abcdef0"
+                    },
+                    "field_id": {
+                        "type": "string",
+                        "example": "f1a2b3c4-d5e6-7890-1234-56789abcdef0"
+                    },
+                    "sensor_type": {
+                        "type": "string",
+                        "example": "soil_moisture"
+                    },
+                    "installation_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-05-27"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "active"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "SensorReading": {
+                "title": "SensorReading",
+                "required": [
+                    "id",
+                    "sensor_id",
+                    "timestamp",
+                    "value"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "sensor_id": {
+                        "type": "string",
+                        "example": "s1a2b3c4-d5e6-7890-1234-56789abcdef0"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-05-27T12:00:00Z"
+                    },
+                    "value": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 23.5
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "title": "User",
+                "required": [
+                    "id",
+                    "name",
+                    "email"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "john@example.com"
+                    },
+                    "email_verified_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "YieldPrediction": {
+                "title": "YieldPrediction",
+                "required": [
+                    "id",
+                    "field_id",
+                    "model_version",
+                    "prediction_date",
+                    "predicted_yield_t_ha"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "field_id": {
+                        "type": "string",
+                        "example": "f1a2b3c4-d5e6-7890-1234-56789abcdef0"
+                    },
+                    "model_version": {
+                        "type": "string",
+                        "example": "v1.0.0"
+                    },
+                    "prediction_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-05-27"
+                    },
+                    "predicted_yield_t_ha": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 7.5
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "description": "Enter token in format: Bearer {token}"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "API Endpoints for Authentication"
+        },
+        {
+            "name": "products",
+            "description": "Operations about products"
+        },
+        {
+            "name": "Farmers",
+            "description": "Farmers"
+        },
+        {
+            "name": "Fields",
+            "description": "Fields"
+        },
+        {
+            "name": "HistoricalYields",
+            "description": "HistoricalYields"
+        },
+        {
+            "name": "Recommendations",
+            "description": "Recommendations"
+        },
+        {
+            "name": "Sensors",
+            "description": "Sensors"
+        },
+        {
+            "name": "SensorReadings",
+            "description": "SensorReadings"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
+        },
+        {
+            "name": "YieldPredictions",
+            "description": "YieldPredictions"
+        }
+    ],
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ]
+}

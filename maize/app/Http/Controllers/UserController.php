@@ -113,7 +113,7 @@ class UserController extends Controller
     /**
      * @OA\Put(
      *     path="/users/{id}",
-     *     tags={"Users"},
+     *     tag s={"Users"},
      *     summary="Update a user",
      *     @OA\Parameter(
      *         name="id",

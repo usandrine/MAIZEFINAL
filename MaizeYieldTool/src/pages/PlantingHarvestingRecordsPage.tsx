@@ -2,6 +2,27 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // Export the mockHarvestingRecords constant
+export interface PlantingRecord {
+  id: number;
+  cropType: string;
+  plantingDate: string;
+  field: string;
+  variety: string;
+  plantingMethod: string;
+  rowSpacing: string;
+  seedSpacing: string;
+  seedsPerHill: string;
+  notes: string;
+}
+
+export interface HarvestingRecord {
+  id: number;
+  cropType: string;
+  harvestingDate: string;
+  field: string;
+  yield: string;
+  plantingRecordId: number;
+}
 export const mockHarvestingRecords = [
     { id: 101, cropType: 'Maize', harvestingDate: '2025-08-10', field: 'Field A', yield: '5.2 tons/hectare', plantingRecordId: 1 },
     { id: 102, cropType: 'Maize', harvestingDate: '2024-08-05', field: 'Field B', yield: '4.8 tons/hectare', plantingRecordId: 2 },
@@ -19,19 +40,21 @@ function PlantingHarvestingRecordsPage() {
     const [isAddPlantingModalOpen, setIsAddPlantingModalOpen] = useState(false);
     const [isEditPlantingModalOpen, setIsEditPlantingModalOpen] = useState(false);
     const [editingPlantingRecord, setEditingPlantingRecord] = useState(null);
-    const [plantingRecords, setPlantingRecords] = useState([...mockPlantingRecords]); // Use a copy for state
+    //const [plantingRecords, setPlantingRecords] = useState([...mockPlantingRecords]); // Use a copy for state
 
     // State for viewing planting details
     const [isViewPlantingModalOpen, setIsViewPlantingModalOpen] = useState(false);
-    const [viewingPlantingRecord, setViewingPlantingRecord] = useState(null);
+    const [viewingPlantingRecord, setViewingPlantingRecord] = useState<PlantingRecord | null>(null);
 
     // State for harvesting records (using a state variable for modifications)
-    const [harvestingRecords, setHarvestingRecords] = useState([...mockHarvestingRecords]);
+    const [plantingRecords, setPlantingRecords] = useState<PlantingRecord[]>([]);
+const [harvestingRecords, setHarvestingRecords] = useState<HarvestingRecord[]>([]);
+
     const [isAddHarvestingModalOpen, setIsAddHarvestingModalOpen] = useState(false);
     const [editingHarvestingRecord, setEditingHarvestingRecord] = useState(null);
     const [isEditHarvestingModalOpen, setIsEditHarvestingModalOpen] = useState(false);
     const [isViewHarvestingModalOpen, setIsViewHarvestingModalOpen] = useState(false);
-    const [viewingHarvestingRecord, setViewingHarvestingRecord] = useState(null);
+    const [viewingHarvestingRecord, setViewingHarvestingRecord] = useState<HarvestingRecord | null>(null);
 
     const openAddPlantingModal = () => {
         setIsAddPlantingModalOpen(true);
@@ -40,7 +63,7 @@ function PlantingHarvestingRecordsPage() {
         setIsAddPlantingModalOpen(false);
     };
 
-    const openEditPlantingModal = (record) => {
+    const openEditPlantingModal = (record: React.SetStateAction<null>) => {
         setEditingPlantingRecord(record);
         setIsEditPlantingModalOpen(true);
     };
@@ -51,7 +74,7 @@ function PlantingHarvestingRecordsPage() {
     };
 
     // Functions for viewing planting details
-    const openViewPlantingModal = (record) => {
+    const openViewPlantingModal = (record: React.SetStateAction<null> | PlantingRecord) => {
         setViewingPlantingRecord(record);
         setIsViewPlantingModalOpen(true);
     };
@@ -62,7 +85,7 @@ function PlantingHarvestingRecordsPage() {
     };
 
     // Functions for viewing harvesting details
-    const openViewHarvestingModal = (record) => {
+    const openViewHarvestingModal = (record: React.SetStateAction<null> | HarvestingRecord) => {
         setViewingHarvestingRecord(record);
         setIsViewHarvestingModalOpen(true);
     };

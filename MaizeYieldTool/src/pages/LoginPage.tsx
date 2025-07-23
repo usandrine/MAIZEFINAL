@@ -131,56 +131,55 @@ function LoginPage() {
   };
 
   const handleLogin = async () => {
-    try {
-      setIsLoading(true);
+  try {
+    setIsLoading(true);
+    console.log("Attempting login with", email, password);
 
-      // Validate with Zod
-      const validationResult = loginSchema.safeParse({ email, password });
-      if (!validationResult.success) {
-        setValidationErrors(validationResult.error.errors);
-        return;
-      }
-
-      const response = await api.post<LoginResponse>("/auth/login", {
-        email,
-        password,
-      });
-
-      const { token } = response.data;
-
-      // Store token in localStorage
-      localStorage.setItem("token", token);
-
-      // Get user data
-      const userResponse = await api.get<UserResponse>("/auth/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      // Store user data in localStorage
-      localStorage.setItem("user", JSON.stringify(userResponse.data.user));
-
-      // Show success toast with user name
-      toast.success(`Welcome back, ${userResponse.data.user.name}!`);
-
-      // Redirect to dashboard
-      navigate("/dashboard");
-    } catch (error: any) {
-      console.error("Login error:", error);
-      if (error.response?.data?.message) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error("Login failed. Please check your credentials.");
-      }
-    } finally {
-      setIsLoading(false);
+    const validationResult = loginSchema.safeParse({ email, password });
+    if (!validationResult.success) {
+      console.log("Validation failed");
+      setValidationErrors(validationResult.error.errors);
+      return;
     }
-  };
+
+    const response = await api.post<LoginResponse>("/auth/login", {
+      email,
+      password,
+    });
+
+    const { token } = response.data;
+    console.log("Token received:", token);
+
+    localStorage.setItem("token", token);
+
+    const userResponse = await api.get<UserResponse>("/auth/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    localStorage.setItem("user", JSON.stringify(userResponse.data.user));
+    toast.success(`Welcome back, ${userResponse.data.user.name}!`);
+
+    console.log("Navigating to dashboard...");
+    navigate("/dashboard");
+
+  } catch (error: any) {
+    console.error("Login error:", error);
+    if (error.response?.data?.message) {
+      toast.error(error.response.data.message);
+    } else {
+      toast.error("Login failed. Please check your credentials.");
+    }
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const handleRegister = async () => {
     try {
       setIsLoading(true);
+      navigate("/dashboard");
 
       // Validate with Zod
       const validationResult = registerSchema.safeParse({
